@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP Address Manager - Demo</title>
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🌐 IP Address Manager</h1>
+            <p>Demo ứng dụng quản lý và kiểm tra IP Address</p>
+        </header>
+
+        <div class="tabs">
+            <button class="tab-button active" onclick="openTab(event, 'validate-tab')">Kiểm tra IP</button>
+            <button class="tab-button" onclick="openTab(event, 'geolocation-tab')">🌍 Vị trí IP</button>
+            <button class="tab-button" onclick="openTab(event, 'subnet-tab')">Tính toán Subnet</button>
+            <button class="tab-button" onclick="openTab(event, 'manage-tab')">Quản lý IP</button>
+        </div>
+
+        <!-- Tab 1: Kiểm tra IP -->
+        <div id="validate-tab" class="tab-content active">
+            <div class="card">
+                <h2>🔍 Kiểm tra IP Address</h2>
+                <div class="input-group">
+                    <input type="text" id="ip-input" placeholder="Nhập IP address (VD: 192.168.1.1)" />
+                    <button onclick="validateIP()">Kiểm tra</button>
+                </div>
+                <div id="ip-result" class="result"></div>
+            </div>
+        </div>
+
+        <!-- Tab 2: IP Geolocation -->
+        <div id="geolocation-tab" class="tab-content">
+            <div class="card">
+                <h2>🌍 Tra cứu vị trí IP Address</h2>
+                <div class="input-group">
+                    <input type="text" id="geo-ip-input" placeholder="Nhập IP address (VD: 8.8.8.8)" />
+                    <button onclick="getIPLocation()">Tra cứu vị trí</button>
+                </div>
+                <div id="geo-result" class="result"></div>
+                <div id="map-container" style="height: 400px; margin-top: 20px; border-radius: 8px; overflow: hidden; display: none; position: relative;">
+                    <div id="map" style="height: 400px; width: 100%; position: absolute; top: 0; left: 0;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab 3: Tính toán Subnet -->
+        <div id="subnet-tab" class="tab-content">
+            <div class="card">
+                <h2>🧮 Tính toán Subnet</h2>
+                <div class="input-group">
+                    <input type="text" id="network-input" placeholder="Nhập network (VD: 192.168.1.0/24)" />
+                    <button onclick="calculateSubnet()">Tính toán</button>
+                </div>
+                <div id="subnet-result" class="result"></div>
+            </div>
+        </div>
+
+        <!-- Tab 4: Quản lý IP -->
+        <div id="manage-tab" class="tab-content">
+            <div class="card">
+                <h2>📝 Quản lý IP Address</h2>
+                <div class="input-group">
+                    <input type="text" id="save-ip-input" placeholder="IP address" />
+                    <input type="text" id="save-desc-input" placeholder="Mô tả (tùy chọn)" />
+                    <button onclick="saveIP()">Lưu IP</button>
+                </div>
+                <button onclick="loadIPs()" class="load-btn">🔄 Tải danh sách IP</button>
+                <div id="ip-list" class="ip-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>🐳 Demo IP Programming với Docker | Made with Flask & Python</p>
+    </footer>
+
+    <!-- Leaflet (OpenStreetMap) - Free alternative to Google Maps -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="../static/script.js"></script>
+</body>
+</html>
