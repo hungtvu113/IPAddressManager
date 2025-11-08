@@ -1,0 +1,31 @@
+# Docker Compose for Development
+version: '3.8'
+
+services:
+  ip-programming-app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    container_name: ip-programming-dev
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - NEXT_TELEMETRY_DISABLED=1
+      - WATCHPACK_POLLING=true
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    restart: unless-stopped
+    networks:
+      - ip-programming-dev-network
+    # Cấp quyền để sử dụng network tools
+    cap_add:
+      - NET_RAW
+      - NET_ADMIN
+    command: npm run dev
+
+networks:
+  ip-programming-dev-network:
+    driver: bridge

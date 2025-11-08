@@ -1,0 +1,33 @@
+# Development Dockerfile
+FROM node:18-alpine
+
+# Cài đặt dependencies cần thiết cho Alpine
+RUN apk add --no-cache \
+    libc6-compat \
+    iputils \
+    bind-tools \
+    whois \
+    curl
+
+# Thiết lập working directory
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Cài đặt dependencies (bao gồm devDependencies)
+RUN npm ci
+
+# Copy source code
+COPY . .
+
+# Expose port
+EXPOSE 3000
+
+# Set environment variables
+ENV NODE_ENV=development
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV PORT=3000
+
+# Start development server
+CMD ["npm", "run", "dev"]

@@ -1,19 +1,51 @@
-version: '3.8'
-
 services:
-  ip-manager:
-    build: .
-    container_name: ip-address-manager
+  ip-programming-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ip-programming
     ports:
-      - "5000:5000"
-    volumes:
-      - ./data:/app/data
+      - "3000:3000"
     environment:
-      - FLASK_ENV=production
+      - NODE_ENV=production
+      - NEXT_TELEMETRY_DISABLED=1
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - ip-programming-network
+    # Cấp quyền để sử dụng network tools
+    cap_add:
+      - NET_RAW
+      - NET_ADMIN
+    # Mount volume cho logs (optional)
+    volumes:
+      - ./logs:/app/logs
+
+  # Nginx reverse proxy (optional)
+  nginx:
+    image: nginx:alpine
+    container_name: ip-programming-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - ip-programming-app
     restart: unless-stopped
     networks:
-      - ip-manager-network
+      - ip-programming-network
 
 networks:
-  ip-manager-network:
+  ip-programming-network:
     driver: bridge
+
+volumes:
+  logs:
+    driver: local
